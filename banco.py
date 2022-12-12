@@ -1,11 +1,11 @@
-from typing import List
+from typing import Dict
 from time import sleep
 
 from models.cliente import Cliente
 from models.conta import Conta
 
 
-contas: List[Conta] = []
+contas: Dict[Conta] = {}
 
 
 def main() -> None:
@@ -60,7 +60,7 @@ def criar_conta() -> None:
 
     conta: Conta = Conta(cliente)
 
-    contas.append(conta)
+    contas[conta.codigo] = conta
 
     print('Conta criada com sucesso.')
     print('Dados da conta: ')
@@ -74,7 +74,7 @@ def efetuar_saque() -> None:
     if len(contas) > 0:
         numero: int = int(input('Informe o número da sua conta: '))
 
-        conta: Conta = buscar_conta_por_numero(numero)
+        conta: Conta = contas[numero]
 
         if conta:
             valor: float = float(input('Informe o valor do saque: '))
@@ -92,7 +92,7 @@ def efetuar_deposito() -> None:
     if len(contas) > 0:
         numero: int = int(input('Informe o número da sua conta: '))
 
-        conta: Conta = buscar_conta_por_numero(numero)
+        conta: Conta = contas[numero]
 
         if conta:
             valor: float = float(input('Informe o valor do depósito: '))
@@ -110,12 +110,12 @@ def efetuar_transferencia() -> None:
     if len(contas) > 0:
         numero_o: int = int(input('Informe o número da sua conta: '))
 
-        conta_o: Conta = buscar_conta_por_numero(numero_o)
+        conta_o: Conta = contas[numero_o]
 
         if conta_o:
             numero_d: int = int(input('Informe o número da conta destino: '))
 
-            conta_d: Conta = buscar_conta_por_numero(numero_d)
+            conta_d: Conta = contas[numero_d]
 
             if conta_d:
                 valor: float = float(input('Informe o valor da transferência: '))
@@ -143,16 +143,6 @@ def listar_contas() -> None:
         print('Não existem contas cadastradas.')
     sleep(2)
     menu()
-
-
-def buscar_conta_por_numero(numero: int) -> Conta:
-    c: Conta = None
-
-    if len(contas) > 0:
-        for conta in contas:
-            if conta.numero == numero:
-                c = conta
-    return c
 
 
 if __name__ == '__main__':
